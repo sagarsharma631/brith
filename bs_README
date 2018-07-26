@@ -1,0 +1,23 @@
+/*
+ *	This file contains the basic thinking and logic that how this binary search tree has been implemented.
+ *
+ *	1. bs_tree has been derived from tree_base, so please have a look into it to have more understanding of binary search tree.
+ *
+ *	2. This class just handles the implementation of the binary search tree, it does not have any direct APIs for the user.
+ *
+ *	3. Responsibility of COMMAND MANAGER - 
+ *		
+ *		1. To render APIs to the user which can accept initializer_list, vector or a single value.
+ *
+ *		2. Convert these inputs to the vector and give it to bs_tree class for further processing.
+ *
+ *	4. Responsibility of bs_tree class - 
+ *		
+ *		1. To create a binary search tree from the specified vector.
+ *
+ *		2. To traverse the binary search tree - INORDER, PREORDER, POSTORDER, LEVEL ORDER
+ *
+ *		3. To delete a node from the tree or delete the complete bs tree.
+ *
+ *		4. To maintain the binary search tree property.
+ */
