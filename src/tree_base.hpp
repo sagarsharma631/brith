@@ -1,8 +1,8 @@
 /*
- *	DATE(DD/MM/YYYY) - 28/07/2018
+ *	AUTHOR : SAGAR SHARMA
+ *	DATE CREATED(DD/MM/YYYY) : 30/07/2018
  *
  */
-
 
 #ifndef TREE_BASE_H
 #define TREE_BASE_H
@@ -11,9 +11,18 @@
 #include<vector>
 
 enum STATE{
-	ROOT_CREATED = 0x00,
-	DELETED = 0x01,
+	INVALID = 0,	// Root node of the tree is not yet created
+	ROOT_CREATED = 1,
+	DELETED = 2,
 };
+
+enum TRAVERSE_TYPE{
+	TRAV_PRE = 0,
+	TRAV_IN = 1,
+	TRAV_POST = 2,
+	TRAV_LVL = 3,
+};
+
 
 template<typename T>
 struct node{
@@ -39,17 +48,21 @@ struct node{
 	}
 };
 
+
 template<typename T>
 class tree_base{
+	
 	private:
 	STATE m_CurState;
 	node<T> *m_proot;
 
-	// Following variables are used for storing temporary stuff so always make sure to flush them before using them
+	// Following variables are used for storing temporary stuff so always make sure to flush them before using them.
 	
 	std::vector<T> m_vTempVec;
+	uint8_t m_iTempInt;
+	
 	public:
-	tree_base(){
+	tree_base():m_CurState(INVALID), m_proot(NULL){
 	}
 	inline STATE getCurState() const{
 		return m_CurState;
@@ -64,80 +77,39 @@ class tree_base{
 		return m_proot;
 	}
 
-	void flushTempVec() const{
+	inline void flushTempVec(){
 		m_vTempVec.clear();
 		return;
 	}
 
-	/*	
-	 *	This method will populate the argument vector with the temporary vector. Method takes a non_const lValue reference hence 
-	 *
-	 *	anonymous abjects or any other rValue cannot be sent to this method.
-	 *
-	 */
-	void getTempVec(vector<T> &other) const{
-		// need to make boundary checks and complete this method
+	inline void flushTempInt(){
+		m_iTempInt = 0x00;
 		return;
 	}
+
+	void getTempVec(vector<T> &other) const;
+
+	// Pure virtual functions
+
 	virtual void create_root(T value) = 0;
 	virtual void where_to_insert(T value) = 0;
 
-	/*
-	 *	delete_tree(node<T> *) is made virtual because any derived tree may make use of any other type of node which may have
-	 *
-	 * 	different members and hence may need deallocation of other members as well or there can be a difference in traversal technique 
-	 * 	as well for deletion. But for all cases which make use of this type of node following will suffice.
-	 *
-	 */
-	virtual void delete_tree(node<T> *nd_ptr){
-		if(nd_ptr == NULL)
-			return;
-		delete_tree(node->m_left);
-		delete_tree(node->m_right);
-		delete nd_ptr;
+	// Virtual functions
 
-	}
-
-	/*
-	 *	The set of following four traversal methods is again virtual because of the same reason mentioned above. A derived tree might
-	 *
-	 *	have a different type of node. For other trees the fowllowing methods will suffice.
-	 *
-	 */
-	virtual void trav_in(node<T> *nd_ptr){
-		flushTempVec();
-		if(nd_ptr == NULL)
-			return;
-		trav_in(nd_ptr->m_left);
-		m_vTempVec.push_back(nd_ptr->m_Value);
-		trav_in(nd_ptr->m_right);
-	}
-
-	virtual void trav_pre(node<T> *nd_ptr){
-		flushTempVec();
-		if(nd_ptr == NULL)
-			return;
-		m_vTempVec.push_back(nd_ptr->m_Value);
-		trav_pre(nd_ptr->m_left);
-		trav_pre(nd_ptr->m_right);
-	}
-
-	virtual void trav_post(node<T> *nd_ptr){
-		flushTempVec();
-		if(nd_ptr == NULL)
-			return;
-		trav_post(node->m_left);
-		trav_post(node->m_right);
-		m_vTempVec.push_back(nd_ptr->m_Value);
-	}
-
-	virtual void trav_level(node<T> *nd_ptr){
-	}
-
+	virtual void delete_tree(node<T> *nd_ptr);
+	void traverse_tree(const node<T> *nd_ptr, TRAVERSE_TYPE trav);
+	virtual void trav_in(const node<T> *nd_ptr);
+	virtual void trav_pre(const node<T> *nd_ptr);
+	virtual void trav_post(const node<T> *nd_ptr);
+	virtual void trav_level(const node<T> *nd_ptr);
+	
 	// Virtual destructor
 	virtual ~tree_base(){
 		
 	}
+
+	
+
 };
 
 #endif

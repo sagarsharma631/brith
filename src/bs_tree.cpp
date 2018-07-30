@@ -1,8 +1,5 @@
-#include<iostream>
+#include"tree_base.hpp"
 #include<initializer_list>
-#include<vector>
-
-using namespace std;
 
 enum state_mach{
 	VEC_CREATED = 1,	// vector is created but bs_init is not called or root is not created as of now.
@@ -11,7 +8,8 @@ enum state_mach{
 	TREE_DESTROYED = 4, // this state means that tree is no more valid
 };
 
-template<typename T>
+// Need to delete the following structure after minor modifications to new one
+/*template<typename T>
 struct tree_node{
 	tree_node *LEFT;
 	T value;
@@ -32,22 +30,10 @@ struct tree_node{
 	bool operator<(const struct tree_node<T> &other){
 		return this->value < other.value;
 	}
-};
+};*/
 
 template<typename T>
-class tree_base{
-	vector<T> *m_ptr;	
-	public:
-	tree_base();
-	virtual void setState(state_mach STATE) = 0;
-	virtual state_mach getState() const = 0;
-};
-
-template<typename T>
-class bs_tree{
-	tree_node<T> *m_root;	// This will point to the root node
-	std::vector<T> *m_vptr;
-	state_mach m_eCurState;
+class bs_tree : public tree_base{
 	public:
 	static bs_tree* getInstance(){
 		bs_tree *tptr = new bs_tree<T>; 
@@ -130,7 +116,3 @@ class bs_tree{
 		
 	}
 };
-
-int main(int argc, char *argv[]){
-	return 0;
-}
