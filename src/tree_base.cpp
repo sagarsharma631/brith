@@ -90,11 +90,15 @@ class tree_base{
 		return;
 	}
 
-	// Pure virtual functions
+	// Virtual functions
 	
 	virtual void create_root(T value) = 0;
 
 	virtual void where_to_insert(T value) = 0;
+
+	virtual void insert_node(T value) = 0;
+
+	virtual node<T>* convert_to_node(const T &&value) = 0;
 
 	/*
 	 *	delete_tree(node<T> *) is made virtual because any derived tree may make use of any other type of node which may have

@@ -47,18 +47,19 @@ class bs_tree : public tree_base{
 		}
 		return hptr;
 	}	
+
+	// superfluous method, won't be used, but kept for just in case needed 
 	explicit bs_tree(int size = 0){
 		m_vptr = new vector<T>(size);
 		bs_init();
 	}
-	bs_tree(std::initializer_list<T> &il){
-		m_vptr = new vector<T>(il);
-		bs_init();
-	}
-	bs_tree(std::vector<T> &vec){
-		m_vptr = new vector<T>(std::move(vec));	// will call the move constructor of vector
-		bs_init();
-	}
+
+	// Constructor accepts a universal reference
+	bs_tree(const T &&value){
+		node<T>* nd_ptr = convert_to_node(value);
+		create_root(*nd_ptr);
+		//m_vptr = new vector<T>(std::move(vec));	// will call the move constructor of vector
+	}	
 	
 	// Copy constructor is not allowed as copying a complete tree would be very expensive
 	bs_tree(const bs_tree<T> &other) = delete;
@@ -77,37 +78,24 @@ class bs_tree : public tree_base{
 		// need to make the other pointer as null otherwise might lead to two pointers pointing to same object.	
 	}
 
-	void setCurState(state_mach STATE){
-		m_eCurState = STATE;
+	node<T>* convert_to_node(const T &&value){
+		node<T>*nd_ptr = node<T>::getInstance(value, NULL, NULL);
+		return nd_ptr;
 	}
-
-	state_mach getCurState() const{
-		return m_eCurState;
-	}
-
-	void bs_init(){
-		if(m_vptr->capacity() == 0)
-			setCurState(VEC_CREATED);
-		else{
-			setCurState(VEC_VALID);
-			if(create_root())
-				setCurState(TREE_VALID);
-		}
-	}
-
+	
 	/*
 	 *	The following function will create root from the first element of the vector
 	 *
 	 */
-	bool create_root(){
-		bool ret_value = false;
-		try{
-			m_root = tree_node<T>::getInstance();
-			m_root->value = m_vptr->front();
+	bool create_root(const node<T> &nd_ref){
+		bool retVal = true;
+		if(getCurState() == INVALID){
+			m_proot = &nd_ref;
 		}
-		catch(E){
+		else{
+			retVal = false;
 		}
-		return ret_value;
+		return retVal;
 	}
 
 	bs_tree(std::vector<T> *vptr) = delete;
