@@ -84,7 +84,10 @@ class bs_tree : public tree_base{
 	}
 	
 	/*
-	 *	The following function will create root from the first element of the vector
+	 *	The following function will create root from the first element of the vector.
+	 *	Root node can be created by either of the following two ways : 
+	 *	1. when this method is directly called from command manager after first pop from vector.
+	 *	2. when this method is called from insert_node() when this insert_node is caled without creating root.
 	 *
 	 */
 	bool create_root(const node<T> &nd_ref){
@@ -95,6 +98,39 @@ class bs_tree : public tree_base{
 		else{
 			retVal = false;
 		}
+		return retVal;
+	}
+	
+	// sets a temporary member variable to tell where to insert the new node
+	void where_to_insert(const node<T> *nd_ins, const node<T> *nd_ptr){
+		if(!nd_ptr){
+			m_tempNode = nd_ptr;
+			return;
+		}
+		else{
+			if(nd_ins->m_Value < nd_ptr->m_Value){
+				where_to_insert(nd_ins,nd_ptr->m_left);
+			}
+			else if(nd_ins->m_Value > nd_ptr->m_value){
+				where_to_insert(nd_ins, nd_ptr->m_right);
+			}
+			else{
+				// node is equal to some present node, need to decide
+			}
+		}
+	}
+	
+	bool insert_node(const node<T> *nd_ptr){
+		bool retVal = false;
+		if(canInsert()){
+			where_to_insert(nd_ptr, m_proot);
+			(nd_ptr->m_Value > m_tempNode->m_Value) ? m_tempNode->m_right = nd_ptr: m_tempNode->m_left = nd_ptr;
+		}
+		else{
+			// create the root with first insert
+			create_root(*nd_ptr);
+		}
+		
 		return retVal;
 	}
 
