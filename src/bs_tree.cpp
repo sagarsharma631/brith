@@ -100,11 +100,11 @@ class bs_tree : public tree_base{
 		}
 		return retVal;
 	}
-	
-	// sets a temporary member variable to tell where to insert the new node
-	void where_to_insert(const node<T> *nd_ins, const node<T> *nd_ptr){
+
+	// Sets a temporary member variable to tell where to insert the new node
+	void where_to_insert(const node<T> *nd_ins, const node<T> *nd_ptr = m_proot){
 		if(!nd_ptr){
-			m_tempNode = nd_ptr;
+			m_pTempNode = nd_ptr;
 			return;
 		}
 		else{
@@ -123,7 +123,8 @@ class bs_tree : public tree_base{
 	bool insert_node(const node<T> *nd_ptr){
 		bool retVal = false;
 		if(canInsert()){
-			where_to_insert(nd_ptr, m_proot);
+			flushTempNode();
+			where_to_insert(nd_ptr);
 			(nd_ptr->m_Value > m_tempNode->m_Value) ? m_tempNode->m_right = nd_ptr: m_tempNode->m_left = nd_ptr;
 		}
 		else{
@@ -132,6 +133,57 @@ class bs_tree : public tree_base{
 		}
 		
 		return retVal;
+	}
+
+	bool delete_node(const node<T> *nd_ptr){
+		bool retVal = false;
+		if(canDelete()){
+			flushTempNode();
+			where_to_delete(nd_ptr);
+			if(m_pTempNode){
+				// locate the left most node of the right child of the node to be deleted through locateDelSwap() and swap.
+				swap(locateDelSwap(m_pTempNode->m_right),m_pTempNode);
+			}
+			else{
+				// Node not present
+			}
+		}
+		else{
+			// Tree not created as of now
+		}
+	}
+
+	// Sets the temporary member variable to tell whether the node is present or not
+	void where_to_delete(const node<T> *nd_del, const node<T> *nd_ptr = m_proot){
+		if(nd_ptr->m_Value == nd_del->m_Value){
+			m_pTempNode = nd_ptr;
+			return;
+		}
+		else{
+			if(nd_del->m_Value < nd_ptr->m_Value){
+				where_to_delete(nd_del,nd_ptr->m_left);
+			}
+			else(nd_del->m_Value > nd_ptr->m_value){
+				where_to_delete(nd_ins, nd_ptr->m_right);
+			}
+		}
+	}
+
+	/* Performance addition --> need to verify again, Hence commented
+		if(nd_ptr->m_Value - nd_ptr->m_left->m_Value) < (nd_ptr->m_right->m_Value - nd_ptr->m_Value){
+			// traverse left
+		}
+		else{
+			//traverse right
+		}
+	*/
+	// This method locates the node which will be swapped with the node to be deleted
+	node<T>* locateDelSwap(const node<T> *nd_ptr){
+		if(nd_ptr->m_left == NULL){
+			//m_pTempNode = nd_ptr;
+			return nd_ptr;
+		}
+		locateDelSwap(nd_ptr->m_left);
 	}
 
 	bs_tree(std::vector<T> *vptr) = delete;

@@ -5,7 +5,7 @@
 
 #include"tree_base.hpp"
 
-enum STATE{
+enum GLOBAL_TREE_STATE{
 	INVALID = 0,	// Root node of the tree is not yet created
 	ROOT_CREATED = 1,
 	DELETED = 2,
@@ -52,6 +52,7 @@ class tree_base{
 	
 	std::vector<T> m_vTempVec;
 	uint8_t m_iTempInt;
+	node<T> *m_pTempNode;
 	
 	public:
 	tree_base():m_CurState(INVALID), m_proot(NULL){
@@ -62,8 +63,11 @@ class tree_base{
 	inline setCurState(STATE state){
 		m_CurState = state;
 	}
-	inline virtual bool canInsert(){
-		return m_CurState == STATE::ROOT_CREATED;
+	inline virtual bool canInsert() const{
+		return m_CurState == GLOBAL_TREE_STATE::ROOT_CREATED;
+	}
+	inline virtual bool canDelete() const{
+		return m_CurState == GLOBAL_TREE_STATE::ROOT_CREATED;
 	}
 	inline node<T>* getRoot() const{
 		return m_proot;
@@ -78,6 +82,12 @@ class tree_base{
 		m_iTempInt = 0x00;
 		return;
 	}
+
+	inline void flushTempNode(){
+		m_pTempNode = NULL;
+		return;
+	}
+
 
 	/*	
 	 *	This method will populate the argument vector with the temporary vector. Method takes a non_const lValue reference hence 

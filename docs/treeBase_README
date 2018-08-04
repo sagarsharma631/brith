@@ -1,0 +1,42 @@
+/*
+ *	<!-- DESCRIPTION OF THE BSE CLASS AND ITS METHODS -->
+ *
+ *	This is the base class for all the trees and consists most of the virtual and pure virtual functions.
+ *	
+ *	Following is the description for all the methods present in the class.
+ *
+ *	1. virtual convert_to_node(...)
+ *
+ *	All the trees which inherit fro this base class need to have insert and delete APIs for the command manager, through these APIs 
+ *	command manager can generate the commands for inserting and deleting the nodes in the tree.
+ *
+ *	These insertion and deletion APIs need to have an argument which specifies the node which is to be inserted or deleted. but the 
+ *	nodes are of different types as there can be a simple node or a node being derived from the base node. 
+ *
+ *	For e.g. A node contains - value, left child, right child 
+ *		 Another node contains - value, left child, right child, parent address
+ *
+ *	As the above example states clearly there should be a way out that all the type of nodes can be handled by the insert and delete
+ *	methods. So there can be following ways out - 
+ *
+ *	1. Make insert and delete a virtual in base class having variable number of template parameters as different nodes have different
+ *	   number of members. This makes the insert and delete responsible for the conversion of these prameters to a node and make the 
+ *	   required operation(insert or delete).
+ *
+ *	2. Do not make insert or delete a virtual function but then base class does not make a sense at all or does it?? Worth pondering 
+ *	   about. 
+ *
+ *	3. Take the responsibility off the insert and delete shoulders and assign this task to another virtual method convert_to_node.
+ *
+ *	We went with the third one because convert_to_node will be a pure virtual function which will be defined in each derived class 
+ *	and will take exactly same number of arguments which are needed to create a node of any particular type. This API will be used by
+ *	command manager to create a node from the given arguments and this node will be passed to insert or delete APIs.
+ *
+ *	2. 
+ *
+ *
+ *
+ *
+ *
+ *
+ */
