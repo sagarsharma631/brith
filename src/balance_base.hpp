@@ -89,9 +89,10 @@ class balance_base : public tree_base{
 		if(nd_ins->m_Value < nd_ptr->m_Value){
 			if(nd_ptr->m_pleft == NULL){
 				nd_ptr->m_pleft = nd_ins;
+				++nd_ptr->m_iLeftHt;
 				if(nd_ptr->m_pright == NULL){
 					m_bBoolTemp = true;
-					++nd_ptr->m_iLeftHt;
+					//++nd_ptr->m_iLeftHt;
 					return;
 				}
 			}
@@ -102,9 +103,10 @@ class balance_base : public tree_base{
 		else if(nd_ins->m_Value > nd_ptr->m_Value){
 			if(nd_ptr->m_pright == NULL){
 				nd_ptr->m_pright = nd_ins;
+				++nd_ptr->m_iRightHt;
 				if(nd_ptr->m_pleft == NULL){
 					m_bBoolTemp = true;
-					++nd_ptr->m_iRightHt;
+					//++nd_ptr->m_iRightHt;
 					return;
 				}
 			}
