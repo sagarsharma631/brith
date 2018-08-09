@@ -30,6 +30,10 @@ struct balance_node{
 		m_iRightHt(rtht),
 		m_iLeftHt(ltht){
 	}
+	void setBalanceFactor(){
+		m_iBalFac = m_iRightHt - m_iLeftHt;
+		return;
+	}
 };
 
 template<typename T>
