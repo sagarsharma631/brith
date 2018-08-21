@@ -114,8 +114,31 @@ class balance_base : public tree_base{
 			if(m_bBoolTemp)
 				++nd_ptr->m_iRightHt;
 		}
-	}	
+	}
+	
+	void delete_element(node<T> *nd_del, node<T> *nd_ptr){
+		if(nd_del->m_Value < nd_ptr->m_Value){
+			delete_element(nd_del,nd_ptr->m_pLeft);
+		}
+		else if(nd_del->m_Value > nd_ptr->m_Value){
+			delete_element(nd_del,nd_ptr->m_pRight);
+		}
+		else if(nd_del->m_Value == nd_ptr->m_Value){
+			locate_del_swap(nd_ptr->m_pLeft);
+			if(nd_ptr->m_pRight == NULL){
+			}
+		}
+	}
 
+	node<T>* locate_del_swap(node<T> *nd_ptr){
+		if(nd_ptr->m_pRight == NULL){
+			return nd_ptr;
+		}
+		else{
+			locate_del_swap(nd_ptr->m_pRight);
+		}
+	}
+	
 	void do_left_right(node<T> *sub_root){
 		balance_node<T> *tempNode = do_single_left(sub_root->m_pleft);
 		if(tempNode){
