@@ -1,21 +1,27 @@
 #include"bitClass.hpp"
+
 bitclass* bitClass::m_ptr = NULL;
 
 bool bitClass::setMask(const int &mask){
 	bool ret = false;
-	if(flushAll()){
-		maskDataInit();
+	if(flushAll() && maskDataInit()){
 		ret = true;
 	}
 	return ret;
 }
 
 bool bitClass::maskDataInit(){
+  bool ret = false;
 	calcDigits();	// calculates digits of the mask
 	calcReqBits();	// calculates required number of bits
-	for(int i = 0;i<size;i++){
+  m_Array = new (sizeof(bool) * m_bitsReq);
+  if(m_Array){
+    for(int i = 0;i<size;i++){
         *(m_Array + i) = isBitSet(i+1);
     }
+    ret = true;
+  }
+  return ret;
 }
 
 void bitClass::calcReqBits(){
