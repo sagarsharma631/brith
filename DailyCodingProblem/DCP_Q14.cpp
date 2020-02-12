@@ -40,6 +40,15 @@ bool canBeStrictlyDecreasing(int arr[], int size){
 int main(int argc, char *argv[]){
     int arr[] = {12,9,10,8,2};
     int size = sizeof(arr)/sizeof(arr[0]);
-    cout<<canBeStrictlyDecreasing(arr,size);
+    bool shouldCheck = true;
+    for(int i=0;i<size;++i){
+        if(arr[i] > arr[i+1]){
+            shouldCheck = false;
+        }
+    }
+    if(shouldCheck){
+        canBeStrictlyDecreasing(arr,size);
+    }
+    //cout<<canBeStrictlyDecreasing(arr,size);
     return 0;
 }
