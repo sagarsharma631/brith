@@ -1,5 +1,5 @@
 #include<iostream>
-
+//define DEBUG
 using namespace std;
 
 namespace genericUtils{
@@ -28,8 +28,28 @@ int segregateArray(int arr[], int size){
 // Following function computes the smallest missing number.
 int findSmallestMissing(int arr[], int size){
     int retVal = 0;
-    cout<<arr[0]<<endl;
-    return retVal;
+    for(int i=0;i<size;++i){
+        if(arr[i] >= size){
+            // Do no do anything
+        }
+        else{
+            if(arr[genericUtils::mod(arr[i])] < 0){
+                // This Index has already been made negative earlier.
+            }
+            else{
+                arr[genericUtils::mod(arr[i])] = -arr[arr[i]];
+            }
+        }
+    }
+    int index;
+    for(int index=1;index<size;++index){
+        if(arr[index] > 0){
+            retVal = index;
+            break;
+        }
+    }
+    
+    return (index == size)?size:retVal;
 }
 
 int main(int argc, char *argv[]){
@@ -42,6 +62,6 @@ int main(int argc, char *argv[]){
     }
     cout<<endl;
     #endif
-    findSmallestMissing(arr+posIndexStart,size-posIndexStart);
+    cout<<findSmallestMissing(arr+posIndexStart,size-posIndexStart);
     return 0;
 }
