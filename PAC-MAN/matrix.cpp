@@ -13,6 +13,12 @@ template<typename T>
 		const int m_iRows;	// Once set cannot be changed
 		const int m_iCols;	// Once set cannot be changed
 		T** m_pMatrix;
+		T* getBasePointer(int index) const{
+			if (!isInRange(index)) {
+				return NULL;
+			}
+			return m_pMatrix[index];
+		}
 	protected:
 	public:
 		matrix(int rows = 3, int cols = 3):m_iRows(rows),
@@ -23,7 +29,7 @@ template<typename T>
 			}
 		}
 
-		int getRows(){
+		int getRows() const{
 			return m_iRows;
 		}
 
@@ -31,14 +37,15 @@ template<typename T>
 			return m_iCols;
 		}
 
-		T* operator[](int index) {
-			if (!isInRange(index)) {
-				return NULL;
-			}
-			return m_pMatrix[index];
+		T* operator[](int index){
+			return getBasePointer(index);
 		}
 
-		bool isInRange(const int &rows) {
+		T* operator[](int index) const {
+			return getBasePointer(index);
+		}
+
+		bool isInRange(const int &rows) const{
 			return (rows >= 0 && rows < m_iRows);
 		}
 
