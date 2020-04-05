@@ -7,58 +7,45 @@ DATE(DD/MM/YYYY) - 10/02/2020
 This class is abstracts the normal 2D array, this will be use full when passing 2D arrays to a function.
 
 */
-#include<iostream>
+template<typename T>
+	class matrix {
+	private:
+		const int m_iRows;	// Once set cannot be changed
+		const int m_iCols;	// Once set cannot be changed
+		T** m_pMatrix;
+	protected:
+	public:
+		matrix(int rows = 3, int cols = 3):m_iRows(rows),
+			m_iCols(cols){
+			m_pMatrix = new T* [m_iRows];
+			for (int i = 0; i < m_iRows; ++i) {
+				m_pMatrix[i] = new T[cols] {0};
+			}
+		}
 
-using namespace std;
+		int getRows(){
+			return m_iRows;
+		}
 
-class Matrix{
-  private:
-  int **m_ptr;
-  int m_rows;
-  int m_cols;
-  public:
-  // Rows and Cols cannot be changed once the constructor is called.
-  Matrix(int row = 3, int column = 3){
-      m_ptr = new int*[column];
-      for(int i=0;i<column;i++){
-          m_ptr[i] = new int[row];
-      }
-  }
-  
-  int getRows() const{
-    return m_rows;
-  }
-  
-  int getCols() const{
-    return m_cols;
-  }
-  
-  int* operator[](int index);
-  
-  // Need to properly clean the stuff. No memory leaks should be present.
-  ~Matrix(){
-  }
-  
-  protected:
-  
-};
+		int getCols() const {
+			return m_iCols;
+		}
 
-// Overloading for accessing our matrix.
-int* Matrix::operator[](int index){
-    return m_ptr[index];
-}
+		T* operator[](int index) {
+			if (!isInRange(index)) {
+				return NULL;
+			}
+			return m_pMatrix[index];
+		}
 
-#ifdef DEBUG
-int main(int argc, char *argv[]){
-    Matrix mat(4,5);
-    for(int i = 0;i < 4;i++){
-        for(int j=0;j < 5;j++){
-            mat[i][j] = i*j;
-        }
-    }
-    
-    cout<< mat[3][3]<<endl;
-    
-    return 0;
-}
-#endif
+		bool isInRange(const int &rows) {
+			return (rows >= 0 && rows < m_iRows);
+		}
+
+		~matrix() {
+			// delete each array allocated.
+			for (int index = 0; index < m_iRows; ++index) {
+				delete[] m_pMatrix[index];
+			}
+		}
+	};
