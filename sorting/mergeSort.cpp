@@ -35,7 +35,7 @@ int* mergeTwoSorted(int arr[], const int &lo, const int &hi, const int &mid) {
 		}
 	}
 	else {
-		while (indexR != hi) {
+		while (indexR <= hi) {
 			arrMerged[indexMerge] = arr[indexR];
 			++indexMerge;
 			++indexR;
