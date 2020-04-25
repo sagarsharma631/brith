@@ -1,2 +1,0 @@
-# brith
-A ds library
