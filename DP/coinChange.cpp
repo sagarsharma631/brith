@@ -1,6 +1,14 @@
+/*
+
+AUTHOR - SAGAR SHARMA
+
+DATE LAST MODIFIED(DD/MM/YYYY) - 26/04/2020
+
+*/
+
 #include<iostream>
 
-#define DEBUG
+#define DEBUG   // Please comment this out if you don't want see dpMatrix contents
 
 // DP coin change problem
 int coinChangeProblem(int arr[], int size, int amount) {
@@ -43,12 +51,19 @@ int coinChangeProblem(int arr[], int size, int amount) {
         std::cout << std::endl;
     }
 #endif
-    return dpMatrix[rows - 1][cols - 1];
+    int retVal = dpMatrix[rows - 1][cols - 1];
+  
+    // Deallocate memory or else memory leak
+    for(int i=0;i<rows;++i){
+        delete[] dpMatrix[i];
+    }
+    delete[] dpMatrix;
+    return retVal;
 }
 
 int main(int argc, char* argv[]) {
     int arr[]{ 1,3,5,7 };
     int size = sizeof(arr) / sizeof(arr[0]);
-    cout << coinChangeProblem(arr, size, 10);
+    std::cout << coinChangeProblem(arr, size, 10);
     return 0;
 }
