@@ -1,3 +1,10 @@
+/*
+
+AUTHOR - SAGAR SHARMA
+
+DATE LAST MODIFIED(DD/MM/YYYY) - 26/04/2020
+
+*/
 #include<iostream>
 #include<algorithm>
 #define DEBUG
@@ -60,8 +67,14 @@ bool subSetSumProblem(int arr[], int size, int k) {
 	std::cout<<std::endl;
     }
 #endif
-    // return the result 
-    return dpMatrix[rows - 1][cols - 1];
+    int retVal = dpMatrix[rows - 1][cols - 1];
+  
+    // Deallocate memory or else memory leak
+    for(int i=0;i<rows;++i){
+        delete[] dpMatrix[i];
+    }
+    delete[] dpMatrix;
+    return retVal;
 }
 
 // DP can equal partition - This is a variation of above problem.
@@ -71,4 +84,11 @@ bool canPartitionEqual(int arr[], int size) {
         sum += arr[i];
     }
     return (sum % 2) ? false : subSetSumProblem(arr, size, sum / 2);
+}
+
+int main(int argc, char* argv[]) {
+    int arr[]{ 1,2,3,4 };
+    int size = sizeof(arr) / sizeof(arr[0]);
+    std::cout << subSetSumProblem(arr, size,9);
+    return 0;
 }
