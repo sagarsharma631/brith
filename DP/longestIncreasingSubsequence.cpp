@@ -1,33 +1,37 @@
 /*
  *	AUTHOR - SAGAR SHARMA
  *
- *	DATE MODIFIED(DD/MM/YYYY) - 26/04/2020
+ *	DATE MODIFIED(DD/MM/YYYY) - 01/05/2020
  *
  */
 
 #include<iostream>
 #include<algorithm>
+#include<bits/stdc++.h>
+
+using namespace std;
+
 
 // Recursive longest increasing subsequence
-int longestIncreasinSubsequence(int arr[], int size, int currIndex, int prevElement, bool& shouldInclude) {
-    if (currIndex >= size) {
+int longestIncreasingSubsequence(int arr[], int size, int currIndex, int prev) {
+
+    // Our base case
+    if (currIndex == size) {
         return 0;
     }
-    int skippingElement = longestIncreasinSubsequence(arr, size, currIndex + 1, prevElement, shouldInclude);
-    if (arr[currIndex] < prevElement) {
-        /* 
-        This means that this element cannot be part of this increasing subsequence. It means we need to start a new    
-        subsequence from this element or skip this element and keep adding subsequent elements to the subsequence.
-        */
-        int startingNewSequence = longestIncreasinSubsequence(arr, size, currIndex + 1, arr[currIndex], shouldInclude) + 1;
+
+    // The element is not included - Hence sending prev as the element.
+    int excluding = longestIncreasingSubsequence(arr, size, currIndex + 1, prev);
+
+    // Include this element only if this element is bigger then the prev. Hence add 1 and send this element as prev
+    // to next one.
+    int including = 0;//INT_MIN
+    if (arr[currIndex] > prev) {
+        including = longestIncreasingSubsequence(arr, size, currIndex + 1, arr[currIndex]);
     }
-    else if (arr[currIndex] > prevElement) {
-        int includingElement = longestIncreasinSubsequence(arr, size, currIndex + 1, arr[currIndex],shouldInclude);
-        if (shouldInclude) {
-            return  max(skippingElement, includingElement+1);
-        }
-        return max(skippingElement,includingElement);
-    }
+
+    // either include 1 up or here one and the samething. 
+    return max(excluding, including + 1);
 }
 
 // DP longest increasing subsequence
@@ -66,7 +70,6 @@ int main(int argc, char* argv[]) {
     //int arr[]{ -3,0,5,10,9,21,6 };
     int arr[]{ 5,4,3,2,1 };
     int size = sizeof(arr) / sizeof(arr[0]);
-    bool shouldInclude;
     cout << longestIncreasingSubsequence(arr, size);
     return 0;
 }
