@@ -1,3 +1,11 @@
+/*
+ *	NAME - SAGAR SHARMA
+ *
+ *	DATE MODIFIED(DD/MM/YYYY) - 01/05/2020
+ *
+ *	Question - Given an array, find the minimum difference between two subsets
+ *
+ */
 #include<iostream>
 
 using namespace std
