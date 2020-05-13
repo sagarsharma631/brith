@@ -39,6 +39,10 @@ int rodCuttingProblem(int value[], int size, int rodLength, int currIndex, int v
 }
 
 int rodCuttingProblem(int value[], int size, int rodLength, int currIndex) {
+    if (rodLength < 0) {
+        return INT_MIN;
+    }
+    // There is nothing left of the original rod.
     if (rodLength == 0) {
         return 0;
     }
