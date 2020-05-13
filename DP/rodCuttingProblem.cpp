@@ -38,6 +38,23 @@ int rodCuttingProblem(int value[], int size, int rodLength, int currIndex, int v
     return max(including, excluding);
 }
 
+int rodCuttingProblem(int value[], int size, int rodLength, int currIndex) {
+    if (rodLength == 0) {
+        return 0;
+    }
+
+    // This base case means that i am still left with some of my rod, but I do not have any bars remaining
+    if (currIndex >= size) {
+        return INT_MIN;
+    }
+
+    int including = rodCuttingProblem(value, size, rodLength - (currIndex + 1), currIndex) + value[currIndex];
+
+    int excluding = rodCuttingProblem(value, size, rodLength, currIndex + 1);
+
+    return max(including, excluding);
+}
+
 // DP solution for rod cutting problem
 int rodCuttingProblem(int value[], int size) {
     int rows = size + 1;
