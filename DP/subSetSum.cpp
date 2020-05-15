@@ -24,7 +24,7 @@ bool subSetSumProblem(int arr[], int size, int rem, int index, int& iterations) 
         subSetSumProblem(arr, size, rem - arr[index], index + 1, iterations);
 }
 
-// Top Down DP solution for subset sum problem
+// Bottom Up DP solution for subset sum problem
 bool subSetSumProblem(int arr[], int size, int k) {
     int rows = size + 1;
     int cols = k + 1;
