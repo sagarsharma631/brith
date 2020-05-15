@@ -42,12 +42,12 @@ int longestCommonSubsequenceUtil(const string str1, const string str2) {
     }
 
     // filling our base cases.
-    for (int i = 1; i < rows; ++i) {
-        dpMatrix[i][0] = 0;
+    for (int i = 0; i < rows; ++i) {
+        dpMatrix[i][0] = true;
     }
-    for (int i = 0; i < cols; ++i) {
-        dpMatrix[0][i] = 0;
-    }
+    for (int i = 1; i < cols; ++i) {
+        dpMatrix[0][i] = false;
+    } 
 
 
     // filling our DP table
