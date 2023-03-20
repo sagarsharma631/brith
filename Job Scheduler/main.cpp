@@ -7,14 +7,20 @@
 
 #include"ScheduleAlgorithm.hpp"
 
+void schedule(ShortTermSchedulingBase& obj){
+    obj.execute();
+    return;
+}
+
 int main(int argc, const char * argv[]) {
     std::vector<struct job> jobs({
-        job("P1",0,6),
-        job("P2",3,5),
+        job("P1",0,8),
+        job("P5",4,5),
         job("P3",2,2),
-        job("P4",1,3)
+        job("P2",1,4),
+        job("P4",3,9)
     });
-    ShortTermSchedulingSJF obj(jobs);
-    obj.execute();
+    ShortTermSchedulingSRTF obj(jobs);
+    schedule(obj);
     return 0;
 }
