@@ -53,6 +53,7 @@ public:
     virtual void initialize() = 0;
     virtual void push(struct job obj) = 0;
     virtual struct job pop() = 0;
+    virtual bool empty() = 0;   // This returns the run time status of the queue.
     inline int getSize() const{return m_size;}
 };
 
@@ -74,18 +75,19 @@ public:
     void initialize() override;
     void push(struct job obj) override;
     struct job pop() override;
+    bool empty() override;
 };
 
 // This creates the ready Queue for SJF scheduling
 class SJFQueue : public IReadyQ{
 private:
+protected:
     struct compareBurst{
         bool operator()(struct job& first, struct job& second){
             return first.m_burst > second.m_burst;
         }
     };
     std::priority_queue<struct job, std::vector<struct job>, struct compareBurst> readyQ;
-protected:
 public:
     SJFQueue(std::vector<struct job> _jobs):
         IReadyQ(_jobs,static_cast<int>(_jobs.size()))
@@ -98,8 +100,26 @@ public:
     void initialize() override;
     void push(struct job obj) override;
     struct job pop() override;
+    bool empty() override;
 };
 
 // This creates the ready Queue for SRTF scheduling
+class SRTFQueue : public SJFQueue{
+private:
+protected:
+public:
+    SRTFQueue(std::vector<struct job> _jobs):
+        SJFQueue(_jobs)
+    {
+        
+    }
+    ~SRTFQueue(){
+        
+    }
+    void initialize() override;
+    //void push(struct job obj) override;
+    //struct job pop() override;
+    bool empty() override;
+};
 
 #endif /* IReadyQueue_hpp */
