@@ -8,7 +8,7 @@
 #include "IReadyQueue.hpp"
 
 void FCFSQueue::initExecute(int lo, int hi){
-    // Variant of quicksort - sorts the jobs on the basis of burst time.
+    // Variant of quicksort - sorts the jobs on the basis of arrival time.
     if(hi <= lo){
         return;
     }
@@ -51,6 +51,10 @@ struct job FCFSQueue::pop(){
     }
 }
 
+bool FCFSQueue::empty(){
+    assert(0);
+}
+
 void SJFQueue::initialize(){
     for(auto iter : m_jobs){
         readyQ.push(iter);
@@ -68,3 +72,16 @@ struct job SJFQueue::pop(){
     readyQ.pop();
     return current;
 }
+
+bool SJFQueue::empty(){
+    assert(0);
+}
+
+void SRTFQueue::initialize(){
+    // Does not need any initialization.
+}
+
+bool SRTFQueue::empty(){
+    return readyQ.empty();
+}
+
