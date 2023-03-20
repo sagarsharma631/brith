@@ -60,4 +60,15 @@ public:
     void execute() override;
 };
 
+class ShortTermSchedulingSRTF : public ShortTermSchedulingBase{
+private:
+    void executeInit(int lo, int hi);
+protected:
+public:
+    ShortTermSchedulingSRTF(std::vector<struct job>& jobs);
+    ~ShortTermSchedulingSRTF();
+    // This function executes the scheduling
+    void execute() override;
+};
+
 #endif /* ScheduleAlgorithm_hpp */
