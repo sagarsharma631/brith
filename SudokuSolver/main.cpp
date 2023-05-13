@@ -28,8 +28,6 @@ class Solution {
             }
         }
     }
-    
-public:
 
     bool tryPlacing(vector<vector<char>>& board, int rowIndex, int colIndex){
         short int mask = 0;
@@ -72,6 +70,8 @@ public:
             }
         }
     }
+    
+public:
     
     void solveSudoku(vector<vector<char>>& board) {
         rows = (int)board.size();
